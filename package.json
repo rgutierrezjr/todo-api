@@ -1,7 +1,6 @@
 {
-  "name": "node-todo-api",
+  "name": "todo-api",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,5 +9,14 @@
   "license": "ISC",
   "dependencies": {
     "mongodb": "^2.2.5"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rgutierrezjr/todo-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rgutierrezjr/todo-api/issues"
+  },
+  "homepage": "https://github.com/rgutierrezjr/todo-api#readme",
+  "description": ""
 }
