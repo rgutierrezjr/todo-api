@@ -1,3 +1,5 @@
+const env = process.env.NODE_ENV;
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const _ = require('lodash');
@@ -14,17 +16,15 @@ app.use(bodyParser.json());
 
 // POST todo
 app.post('/todos', (req, res) => {
-    console.log(req.body);
-
     var todo = new Todo({
         text: req.body.text
     });
 
     todo.save().then((doc) => {
         res.send(doc);
-    }, (e) => {
-        res.status(400).send(e);
-    });
+    }).catch((e) => {
+        res.status(400).send();
+    });;
 });
 
 // GET todo
@@ -76,7 +76,7 @@ app.delete('/todos/:id', (req, res) => {
         }
 
     }).catch((e) => {
-        return res.status(400).send();
+        return res.status(400).send(e);
     });
 
 });
@@ -106,14 +106,23 @@ app.patch('/todos/:id', (req, res) => {
         res.status(200).send({todo});
 
     }).catch((e) => {
-        res.status(400).send();
+        res.status(400).send(e);
     });
 });
 
 
 // POST users
 app.post('/users', (req, res) => {
-    console.log(req.body);
+    const body = _.pick(req.body, ['email', 'password']);
+    const user = new User(body);
+
+    user.save().then(() => {
+        return user.generateAuthToken();
+    }).then((token) => {
+        res.header('x-auth', token).send(user);
+    }).catch((e) => {
+        res.status(400).send(e);
+    });
 });
 
 app.listen(port, () => {
