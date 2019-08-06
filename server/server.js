@@ -16,7 +16,9 @@ const port = process.env.PORT || 3000
 
 app.use(bodyParser.json());
 
-// POST todo
+/**
+ * Route: POST Todo
+ */
 app.post('/todos', authenticate, (req, res) => {
     var todo = new Todo({
         text: req.body.text,
@@ -30,7 +32,9 @@ app.post('/todos', authenticate, (req, res) => {
     });;
 });
 
-// GET todo
+/**
+ * Route: GET Todo
+ */
 app.get('/todos', authenticate, (req, res) => {
    Todo.find({
        _creator: req.user._id
@@ -41,8 +45,9 @@ app.get('/todos', authenticate, (req, res) => {
    });
 });
 
-
-// Get Todo by id
+/**
+ * Route: Get Todo by id
+ */
 app.get('/todos/:id', authenticate, (req, res) => {
     const id = req.params.id;
 
@@ -67,7 +72,9 @@ app.get('/todos/:id', authenticate, (req, res) => {
 
 });
 
-// Delete Todo
+/**
+ * Route: Delete Todo
+ */
 app.delete('/todos/:id', authenticate, (req, res) => {
     const id = req.params.id;
 
@@ -92,7 +99,9 @@ app.delete('/todos/:id', authenticate, (req, res) => {
 
 });
 
-// Patch/Update Todo
+/**
+ * Route: Patch (update) Todo
+ */
 app.patch('/todos/:id', authenticate, (req, res) => {
     const id = req.params.id;
     const body = _.pick(req.body, ['text', 'completed']);
@@ -124,8 +133,9 @@ app.patch('/todos/:id', authenticate, (req, res) => {
     });
 });
 
-
-// POST users
+/**
+ * Route: POST new User
+ */
 app.post('/users', (req, res) => {
     const body = _.pick(req.body, ['email', 'password']);
     const user = new User(body);
@@ -139,11 +149,16 @@ app.post('/users', (req, res) => {
     });
 });
 
+/**
+ * Route: GET "me" (User)
+ */
 app.get('/users/me', authenticate, (req, res) => {
    res.send(req.user);
 });
 
-// POST /users/login {email, password}
+/**
+ * Route: User Login
+ */
 app.post('/users/login', (req, res) => {
     const body = _.pick(req.body, ['email', 'password']);
 
@@ -157,6 +172,9 @@ app.post('/users/login', (req, res) => {
 
 });
 
+/**
+ * Route: DELETE "me" (User)
+ */
 app.delete('/users/me/token', authenticate, (req, res) => {
    req.user.removeToken(req.token).then(() => {
       res.status(200).send();
@@ -165,6 +183,9 @@ app.delete('/users/me/token', authenticate, (req, res) => {
    });
 });
 
+/**
+ * Start server and listen on port.
+ */
 app.listen(port, () => {
     console.log(`Started up at port ${port}.`);
 });

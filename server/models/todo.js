@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
 
+/**
+ * Todo schema declaration and constraints.
+ * @type {Model}
+ */
 const Todo = mongoose.model('Todo', {
     text: {
         type: String,

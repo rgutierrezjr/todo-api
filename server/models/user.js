@@ -4,6 +4,9 @@ const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
 
+/**
+ * User schema declaration and constraints.
+ */
 const UserSchema = new mongoose.Schema({
     email: {
         type: String,
@@ -33,6 +36,9 @@ const UserSchema = new mongoose.Schema({
     }]
 });
 
+/**
+ * Instance method: returns "this" as a JSON object.
+ */
 UserSchema.methods.toJSON = function () {
   const user = this;
   const userObject = user.toObject();
@@ -40,6 +46,11 @@ UserSchema.methods.toJSON = function () {
   return _.pick(userObject, ['_id', 'email']);
 };
 
+/**
+ * Instance method: generates authentication token for "this" user.
+ *
+ * @returns {Promise|*|PromiseLike<T | never>|Promise<T | never>}
+ */
 UserSchema.methods.generateAuthToken = function () {
     const user = this;
     const access = 'auth';
@@ -52,6 +63,26 @@ UserSchema.methods.generateAuthToken = function () {
     });
 };
 
+/**
+ * Instance method: removes (pulls) token from "this" User.
+ * @param token
+ * @return {*}
+ */
+UserSchema.methods.removeToken = function (token) {
+  const user = this;
+
+  return user.update({
+     $pull: {
+         tokens: {token}
+     }
+  });
+};
+
+/**
+ * Static method: find User by token.
+ * @param token
+ * @return {*}
+ */
 UserSchema.statics.findByToken = function (token) {
     const User = this;
     let decoded;
@@ -63,12 +94,18 @@ UserSchema.statics.findByToken = function (token) {
     }
 
     return User.findOne({
-       '_id': decoded._id,
-       'tokens.token': token,
-       'tokens.access': 'auth'
+        '_id': decoded._id,
+        'tokens.token': token,
+        'tokens.access': 'auth'
     });
 };
 
+/**
+ * Static method: find User by credentials.
+ * @param email
+ * @param password
+ * @return {Promise}
+ */
 UserSchema.statics.findByCredentials = function (email, password) {
     const User = this;
 
@@ -90,17 +127,9 @@ UserSchema.statics.findByCredentials = function (email, password) {
 
 };
 
-UserSchema.methods.removeToken = function (token) {
-  const user = this;
-
-  return user.update({
-     $pull: {
-         tokens: {token}
-     }
-  });
-};
-
-// require 'function' to access 'this'
+/**
+ * Pre-save hook: re-salt password if modified.
+ */
 UserSchema.pre('save', function (next) {
     const user = this;
 
@@ -118,6 +147,10 @@ UserSchema.pre('save', function (next) {
     }
 });
 
+/**
+ * Bind schema to model.
+ * @type {Model}
+ */
 const User = mongoose.model('User', UserSchema);
 
 module.exports = {User};
