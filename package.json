@@ -18,7 +18,7 @@
     "crypto-js": "^3.1.9-1",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.4.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "mongodb": "^2.2.5",
     "mongoose": "^5.4.8",
     "validator": "^10.11.0"
@@ -31,5 +31,6 @@
     "url": "https://github.com/rgutierrezjr/todo-api/issues"
   },
   "homepage": "https://github.com/rgutierrezjr/todo-api#readme",
-  "description": ""
+  "description": "Todo API. User can register and create Todos and retrieve them with token authenticated api calls. Persistence enabled with MongoDB.",
+  "devDependencies": {}
 }
