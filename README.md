@@ -2,7 +2,7 @@
 
 ## Description
 The following example node.js application demonstrates an exposed (and also secured) simple 
-TODO api. MongoDB back-end and Express middleware. Includes TODO CRUD functions and user authentication (JWT).
+TODO api. MongoDB database and Express middleware. Includes CRUD functions and user authentication (JWT).
 
 
 ## Installation
