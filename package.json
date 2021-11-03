@@ -21,7 +21,7 @@
     "lodash": "^4.17.15",
     "mongodb": "^2.2.5",
     "mongoose": "^5.4.8",
-    "validator": "^10.11.0"
+    "validator": "^13.7.0"
   },
   "repository": {
     "type": "git",
